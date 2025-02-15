@@ -3,39 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Home - Tech Challenges</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            background: linear-gradient(to bottom, #111, #222);
+            color: #fff;
+            height : 100vh;
         }
         .container {
-            margin-top: 10%;
+            margin-top:50px;
+            text-align: center;
+            padding: 50px 20px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.2rem;
+            opacity: 0.8;
         }
         .btn {
             display: inline-block;
-            margin: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
+            margin: 20px 10px;
+            padding: 12px 25px;
+            font-size: 18px;
             color: #fff;
-            background-color: #007bff;
-            text-decoration: none;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
             border-radius: 5px;
+            text-decoration: none;
+            transition: 0.3s;
         }
-        .btn-register {
-            background-color: #28a745;
+        .btn:hover {
+            transform: scale(1.1);
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .feature-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            text-align: center;
+            transition: 0.3s;
+        }
+        .feature-box:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 500px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>Welcome to Tech Challenges</h1>
-        <p>Join us to explore exciting challenges and grow your skills!</p>
-        <a href="{% url 'login' %}" class="btn">Login</a>
-        <a href="{% url 'register' %}" class="btn btn-register">Register</a>
+        <h1>Track Your Learning Journey</h1>
+        <p>Join thousands of learners who track and showcase their coding journey.</p>
+        <a href="{% url 'register' %}" class="btn">Start Your Journey</a>
+        <a href="#" class="btn">Watch Demo</a>
     </div>
+
+    <div class="features">
+        <div class="feature-box">Challenge Tracking</div>
+        <div class="feature-box">Daily Screenshots</div>
+        <div class="feature-box">Progress Analytics</div>
+        <div class="feature-box">Achievement Badges</div>
+        <div class="feature-box">Community Feed</div>
+        <div class="feature-box">Extra 1</div>
+        <div class="feature-box">Extra 2</div>
+        <div class="feature-box">Extra 3</div>
+        <div class="feature-box">Extra 3</div>
+    </div>
+
 </body>
 </html>

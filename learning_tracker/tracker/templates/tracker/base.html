@@ -9,103 +9,129 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
-        }
-        header {
-            background-color: #007bff;
+            background-color: #121212;
             color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
-        nav a {
+
+        main {
+            padding: 20px;
+            padding-bottom: 70px; /* Ensure content doesn't get covered by navbar */
+        }
+
+        /* Floating Navbar */
+        .floating-navbar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background-color: #1e1e1e;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .floating-navbar a {
             color: white;
             text-decoration: none;
-            margin-right: 15px;
+            font-size: 16px;
+            padding: 10px;
+            transition: 0.3s;
         }
-        nav a:hover {
-            text-decoration: underline;
+
+        .floating-navbar a:hover {
+            color: #03dac6;
         }
+
+        /* Notification Bell */
         .notification-bell {
             position: relative;
-            display: inline-block;
         }
+
         #notification-count {
             position: absolute;
-            top: -10px;
-            right: -10px;
+            top: -5px;
+            right: -5px;
             background-color: red;
             color: white;
             border-radius: 50%;
             padding: 2px 6px;
             font-size: 12px;
         }
+
+        /* Notifications Dropdown */
         #notifications-dropdown {
+            display: none;
             position: absolute;
-            top: 40px;
+            bottom: 50px;
             right: 0;
-            background-color: white;
-            border: 1px solid #ccc;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            width: 300px;
-            max-height: 400px;
-            overflow-y: auto;
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1001;
         }
+
         #notifications-dropdown ul {
             list-style: none;
+            padding: 10px;
             margin: 0;
-            padding: 0;
         }
+
         #notifications-dropdown li {
             padding: 10px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #333;
         }
+
         #notifications-dropdown li:last-child {
             border-bottom: none;
-        }
-        main {
-            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="{% url 'landing_page' %}">Home</a>
-            {% if user.is_authenticated %}
-                <a href="{% url 'dashboard' %}">Dashboard</a>
-                <a href="{% url 'profile' %}">Profile</a>
-                <div class="notification-bell">
-                    <span id="notification-count">{{ unread_notifications|length }}</span>
-                    <button onclick="toggleNotifications()">🔔</button>
-                    <div id="notifications-dropdown" style="display: none;">
-                        {% if unread_notifications %}
-                            <ul>
-                                {% for notification in unread_notifications %}
-                                    <li>{{ notification.message }} ({{ notification.created_at|timesince }} ago)</li>
-                                {% endfor %}
-                            </ul>
-                            <form method="POST" action="{% url 'mark_notifications_as_read' %}">
-                                {% csrf_token %}
-                                <button type="submit">Mark All as Read</button>
-                            </form>
-                        {% else %}
-                            <p>No new notifications.</p>
-                        {% endif %}
-                    </div>
-                </div>
-                <a href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
-            {% endif %}
-        </nav>
-    </header>
     <main>
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Floating Navbar -->
+    <nav class="floating-navbar">
+        <a href="{% url 'landing_page' %}">🏠 Home</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}">📊 Dashboard</a>
+            <a href="{% url 'profile' %}">👤 Profile</a>
+            <div class="notification-bell">
+                <span id="notification-count">{{ unread_notifications|length }}</span>
+                <button onclick="toggleNotifications()">🔔</button>
+                <div id="notifications-dropdown">
+                    {% if unread_notifications %}
+                        <ul>
+                            {% for notification in unread_notifications %}
+                                <li>{{ notification.message }} ({{ notification.created_at|timesince }} ago)</li>
+                            {% endfor %}
+                        </ul>
+                        <form method="POST" action="{% url 'mark_notifications_as_read' %}">
+                            {% csrf_token %}
+                            <button type="submit">Mark All as Read</button>
+                        </form>
+                    {% else %}
+                        <p>No new notifications.</p>
+                    {% endif %}
+                </div>
+            </div>
+            <a href="{% url 'logout' %}">🚪 Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">🔑 Login</a>
+            <a href="{% url 'register' %}">📝 Register</a>
+        {% endif %}
+    </nav>
+
     <script>
         function toggleNotifications() {
             const dropdown = document.getElementById('notifications-dropdown');

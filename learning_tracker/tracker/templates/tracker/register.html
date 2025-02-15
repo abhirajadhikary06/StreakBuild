@@ -1,13 +1,151 @@
 {% extends 'tracker/base.html' %}
 
 {% block content %}
-<h1>Register</h1>
+<div class="container">
+    <div class="register-box">
+        <!-- Left Side: Form Section -->
+        <div class="register-form-section">
+            <h1 class="title">Register</h1>
+            <form method="POST" class="register-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.as_p }}
+                </div>
+                <button type="submit" class="register-btn">Register</button>
+            </form>
+            <p class="login-text">Already have an account? <a href="{% url 'login' %}" class="login-link">Login here</a>.</p>
+        </div>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+        <!-- Right Side: Instructions Section -->
+        <div class="instructions-section">
+            <h2>Instructions</h2>
+            <ul>
+                <li>Choose a unique username.</li>
+                <li>Use a strong password (at least 8 characters).</li>
+                <li>Ensure your email is correct for verification.</li>
+                <li>Remember your credentials for future login.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-<p>Already have an account? <a href="{% url 'login' %}">Login here</a>.</p>
+<style>
+    /* General Page Styling */
+    body {
+        background: #181818; /* Dark background */
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    /* Centered Container */
+    .container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Main Register Box */
+    .register-box {
+        display: flex;
+        width: 900px;
+        background: #222831; /* Darker grey box */
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+        padding: 30px;
+    }
+
+    /* Left Side (Form Section) */
+    .register-form-section {
+        width: 60%;
+        padding-right: 30px;
+    }
+
+    .title {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #00ADB5; /* Primary accent color */
+    }
+
+    .register-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #393E46; /* Subtle border */
+        border-radius: 6px;
+        background: #222831; /* Dark background */
+        color: white;
+    }
+
+    .form-group input:focus {
+        border-color: #00ADB5; /* Highlight on focus */
+        outline: none;
+    }
+
+    .register-btn {
+        background: #00ADB5; /* Primary button color */
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        padding: 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .register-btn:hover {
+        background: #008E9B; /* Darker hover effect */
+    }
+
+    .login-text {
+        margin-top: 15px;
+        font-size: 15px;
+    }
+
+    .login-link {
+        color: #00ADB5;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .login-link:hover {
+        text-decoration: underline;
+    }
+
+    /* Right Side (Instructions) */
+    .instructions-section {
+        width: 40%;
+        background: #393E46; /* Slightly lighter dark background */
+        padding: 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #EEEEEE; /* Lighter text */
+    }
+
+    .instructions-section h2 {
+        margin-bottom: 15px;
+        color: #00ADB5; /* Accent color */
+    }
+
+    .instructions-section ul {
+        padding-left: 20px;
+    }
+
+    .instructions-section li {
+        margin-bottom: 8px;
+    }
+</style>
 {% endblock %}
