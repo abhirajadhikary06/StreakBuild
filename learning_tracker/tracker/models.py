@@ -11,16 +11,21 @@ class Profile(models.Model):
 
 class FieldOfInterest(models.Model):
     name = models.CharField(max_length=100)
-    challenges = models.ManyToManyField('Challenge', blank=True)
+    challenges = models.ManyToManyField('Challenge', blank=True)  # Keep this as 'challenges'
 
     def __str__(self):
         return self.name
-
-
+    
 class Challenge(models.Model):
     name = models.CharField(max_length=100)
     total_days = models.IntegerField()
-
+    field_of_interest = models.ForeignKey(
+        'FieldOfInterest',
+        on_delete=models.CASCADE,
+        related_name='challenge_set',
+        null=True,  # Allow NULL values
+        blank=True  # Allow blank values in forms
+    )
     def __str__(self):
         return self.name
 
@@ -33,10 +38,10 @@ class Notification(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.message}"
     
-class UploadedImage(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='uploads/')
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
+class UploadedFile(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    challenge = models.ForeignKey('Challenge', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='uploads/')  # Generic file field
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

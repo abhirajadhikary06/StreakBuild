@@ -1,5 +1,5 @@
 from django import forms
-from .models import UploadedImage, FieldOfInterest
+from .models import FieldOfInterest, UploadedFile
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
@@ -19,7 +19,7 @@ class FieldOfInterestForm(forms.Form):
     )
 
 
-class UploadImageForm(forms.ModelForm):
+class UploadFileForm(forms.ModelForm):
     class Meta:
-        model = UploadedImage
-        fields = ['image', 'challenge']
+        model = UploadedFile
+        fields = ['challenge', 'file']  # Use 'file' instead of 'image'
