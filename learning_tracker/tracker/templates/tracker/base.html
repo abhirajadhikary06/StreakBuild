@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Tracker</title>
+</head>
+<body>
+    <header>
+        <nav>
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'profile' %}">Profile</a>
+                <div class="notification-bell">
+                    <span id="notification-count">{{ unread_notifications|length }}</span>
+                    <button onclick="toggleNotifications()">🔔</button>
+                    <div id="notifications-dropdown" style="display: none;">
+                        {% if unread_notifications %}
+                            <ul>
+                                {% for notification in unread_notifications %}
+                                    <li>{{ notification.message }} ({{ notification.created_at|timesince }} ago)</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No new notifications.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+    <div id="notifications-dropdown" style="display: none;">
+        {% if unread_notifications %}
+            <ul>
+                {% for notification in unread_notifications %}
+                    <li>{{ notification.message }} ({{ notification.created_at|timesince }} ago)</li>
+                {% endfor %}
+            </ul>
+            <form method="POST" action="{% url 'mark_notifications_as_read' %}">
+                {% csrf_token %}
+                <button type="submit">Mark All as Read</button>
+            </form>
+        {% else %}
+            <p>No new notifications.</p>
+        {% endif %}
+    </div>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notifications-dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

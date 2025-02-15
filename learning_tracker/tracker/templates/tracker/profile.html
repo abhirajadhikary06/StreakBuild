@@ -1,0 +1,26 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h1>Profile</h1>
+
+<p><strong>Username:</strong> {{ profile.user.username }}</p>
+
+<h2>Progress</h2>
+{% for challenge, progress in progress.items %}
+    <div>
+        <h3>{{ challenge }}</h3>
+        <progress value="{{ progress }}" max="100"></progress> {{ progress|floatformat }}%
+    </div>
+{% endfor %}
+
+<h2>Badges Earned</h2>
+{% if badges %}
+    <ul>
+        {% for badge in badges %}
+            <li>{{ badge.challenge.name }} Badge (Awarded on {{ badge.awarded_at|date:"F j, Y" }})</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No badges earned yet.</p>
+{% endif %}
+{% endblock %}
