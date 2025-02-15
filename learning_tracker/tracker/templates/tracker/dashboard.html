@@ -2,37 +2,130 @@
 {% load custom_filters %}
 
 {% block content %}
-<h1>Dashboard</h1>
-
-<!-- Uploaded Files -->
-<h2>Uploaded Files</h2>
-{% if uploads %}
-    <div>
-        {% for upload in uploads %}
-            <div style="margin-bottom: 20px;">
-                <!-- Display file name and a download link -->
-                <p><strong>File:</strong> <a href="{{ upload.file.url }}" target="_blank">{{ upload.file.name }}</a></p>
-                <p><strong>Challenge:</strong> {{ upload.challenge.name }}</p>
-                <!-- Delete button -->
-                <form method="POST" action="{% url 'delete_file' upload.id %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete this file?')">Delete</button>
-                </form>
-            </div>
-        {% endfor %}
-    </div>
-{% else %}
-    <p>No files uploaded yet.</p>
-{% endif %}
-
-<!-- Link to upload a new file -->
-<a href="{% url 'upload_file' %}">Upload File</a>
-
-<!-- Notifications Dropdown -->
-<script>
-    function toggleNotifications() {
-        const dropdown = document.getElementById('notifications-dropdown');
-        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
     }
-</script>
+
+    h1, h2 {
+        color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 10vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Grid Layout for Uploaded Files */
+    .files-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .file-box {
+        flex: 1 1 45%; /* Each file takes 45% width, so 2 in a row */
+        max-width: 45%;
+        padding: 15px;
+        background-color: #333;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .file-box p {
+        margin: 5px 0;
+        font-size: 16px;
+    }
+
+    a {
+        color: #03dac6;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .delete-button {
+        background-color: #cf6679;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .delete-button:hover {
+        background-color: #b00020;
+    }
+
+    .upload-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 18px;
+        background-color: #03dac6;
+        color: #121212;
+        border-radius: 5px;
+        font-size: 18px;
+    }
+
+    .upload-link:hover {
+        background-color: #00c4b4;
+    }
+
+    /* Responsive: Stack in a single column on smaller screens */
+    @media (max-width: 600px) {
+        .file-box {
+            flex: 1 1 100%;
+            max-width: 100%;
+        }
+    }
+</style>
+
+<div class="container">
+    <h1>Dashboard</h1>
+
+    <!-- Uploaded Files -->
+    <h2>Uploaded Files</h2>
+    {% if uploads %}
+        <div class="files-container">
+            {% for upload in uploads %}
+                <div class="file-box">
+                    <p><strong>File:</strong> <a href="{{ upload.file.url }}" target="_blank">{{ upload.file.name }}</a></p>
+                    <p><strong>Challenge:</strong> {{ upload.challenge.name }}</p>
+                    
+                    <!-- Delete button -->
+                    <form method="POST" action="{% url 'delete_file' upload.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this file?')">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No files uploaded yet.</p>
+    {% endif %}
+
+    <!-- Link to upload a new file -->
+    <a href="{% url 'upload_file' %}" class="upload-link">Upload File</a>
+</div>
+
 {% endblock %}

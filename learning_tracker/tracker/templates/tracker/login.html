@@ -1,18 +1,64 @@
 {% extends 'tracker/base.html' %}
 
 {% block content %}
-<h1>Login</h1>
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+    }
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #1e1e1e;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+    }
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        background-color: #333;
+        color: #fff;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    a {
+        color: #4da6ff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
 
-<form method="POST">
-    {% csrf_token %}
-    <label for="username">Username:</label>
-    <input type="text" name="username" id="username" required>
+<div class="login-container">
+    <h1>Login</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" required>
 
-    <label for="password">Password:</label>
-    <input type="password" name="password" id="password" required>
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required>
 
-    <button type="submit">Login</button>
-</form>
+        <button type="submit">Login</button>
+    </form>
 
-<p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+</div>
 {% endblock %}

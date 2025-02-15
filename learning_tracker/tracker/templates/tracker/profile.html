@@ -1,26 +1,127 @@
 {% extends 'tracker/base.html' %}
 
 {% block content %}
-<h1>Profile</h1>
+<style>
+    /* Background Styling */
+    body {
+        background: linear-gradient(135deg, #121212, #1A1A1A);
+        color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
 
-<p><strong>Username:</strong> {{ profile.user.username }}</p>
+    /* Main Container */
+    .container {
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #1B1B1B, #222222);
+        border-radius: 12px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
 
-<h2>Progress</h2>
-{% for challenge, progress in progress.items %}
-    <div>
-        <h3>{{ challenge }}</h3>
-        <progress value="{{ progress }}" max="100"></progress> {{ progress|floatformat }}%
+    h1, h2, h3 {
+        color: #00A8E8;
+        text-transform: uppercase;
+    }
+
+    /* Profile Info */
+    .profile-info {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: linear-gradient(135deg, #28243D,rgb(99, 87, 44));
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 170, 255, 0.3);
+    }
+
+    /* Grid Layout */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .grid-item {
+        background: linear-gradient(135deg, #1E2A38, #243B55);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 170, 255, 0.3);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .grid-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 15px rgba(0, 170, 255, 0.5);
+    }
+
+    /* Progress Bar */
+    progress {
+        width: 100%;
+        height: 12px;
+        border-radius: 6px;
+        appearance: none;
+    }
+
+    progress::-webkit-progress-bar {
+        background-color: #3D3D3D;
+        border-radius: 6px;
+    }
+
+    progress::-webkit-progress-value {
+        background: linear-gradient(90deg, #00A8E8, #3AB5F0);
+        border-radius: 6px;
+        transition: width 0.5s ease-in-out;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+        .grid-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 600px) {
+        .grid-container {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+</style>
+
+<div class="container">
+    <h1>Profile</h1>
+    
+    <div class="profile-info" style="color: white;">
+        <h2 style="color: white;">Hello, <strong>{{ profile.user.username }}</strong> </h2>
     </div>
-{% endfor %}
 
-<h2>Badges Earned</h2>
-{% if badges %}
-    <ul>
-        {% for badge in badges %}
-            <li>{{ badge.challenge.name }} Badge (Awarded on {{ badge.awarded_at|date:"F j, Y" }})</li>
+    <h2>Progress</h2>
+    <div class="grid-container">
+        {% for challenge, progress in progress.items %}
+            <div class="grid-item">
+                <h3>{{ challenge }}</h3>
+                <progress value="{{ progress }}" max="100"></progress>
+                <p>{{ progress|floatformat }}%</p>
+            </div>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>No badges earned yet.</p>
-{% endif %}
+    </div>
+
+    <h2>Badges Earned</h2>
+    <div class="grid-container">
+        {% if badges %}
+            {% for badge in badges %}
+                <div class="grid-item">
+                    <p><strong>{{ badge.challenge.name }} Badge</strong></p>
+                    <p>Awarded on {{ badge.awarded_at|date:"F j, Y" }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No badges earned yet.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
